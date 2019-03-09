@@ -10,7 +10,10 @@
     License URI:  https://www.gnu.org/licenses/gpl-2.0.html
     Text Domain:  blog-plus
     */
-
+     register_activation_hook(__FILE__,'sga_activate');
+    function sga_activate(){
+        wp_mail(get_bloginfo('admin_email'),'Активация плагина','Активация прошла успешно');
+        }
     add_action('admin_menu', function(){
         add_options_page('Google Analytics', 'Google Analytics', 'manage_options', 'blog_plus_admin_menu_ga', function(){
             ob_start();
