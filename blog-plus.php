@@ -14,6 +14,11 @@
     function sga_activate(){
         wp_mail(get_bloginfo('admin_email'),'Активация плагина','Активация прошла успешно');
         }
+     register_activation_hook(__FILE__,function(){
+        if (version_compare(PHP_VERSION, '5.3.0','<')) {
+            header("content-type: text/html; Charset=utf-8");
+            exit('Для работы плагина нужна версия php >=5.3.0');
+        } 
     add_action('admin_menu', function(){
         add_options_page('Google Analytics', 'Google Analytics', 'manage_options', 'blog_plus_admin_menu_ga', function(){
             ob_start();
@@ -21,4 +26,8 @@
             echo ob_get_clean();
         });
     });
+        register_deactivation_hook(__FILE__,function(){
+         $date="[".  date("Y-n-d H:i:s") ."]";
+         error_log($date. " Плагин деактивирован\r\n", 3, dirname(__FILE__) . '/sga_errors_log.log');
+     });
 ?>
